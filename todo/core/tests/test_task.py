@@ -14,6 +14,18 @@ def test_contains_submit_btn(client):
     response = client.get(reverse('core:home'))
     assertContains(response, '<button type="submit"')
 
-def test_task_exists_in_db(client, db):
+def test_valid_task_exists_in_db(client, db):
     response = client.post(reverse('core:home'), data={'title': 'task#1'})
     assert Task.objects.exists()
+
+def test_valid_task_status_code(client, db):
+    response = client.post(reverse('core:home'), data={'title': 'task#1'})
+    assert response.status_code == 302
+
+def test_invalid_task_not_in_db(client, db):
+    response = client.post(reverse('core:home'), data={'title': ''})
+    assert not Task.objects.exists()
+
+def test_invalid_task_status_code(client, db):
+    response = client.post(reverse('core:home'), data={'title': ''})
+    assert response.status_code == 400
