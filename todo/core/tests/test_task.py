@@ -84,3 +84,12 @@ def test_update_task_to_pending(client, completed_task):
 def test_update_task_to_pending_status_code(client, completed_task):
     response = client.post(reverse('core:detail', kwargs={'task_id': completed_task.id}), data={'title': completed_task.title})
     assert response.status_code == 302
+
+
+def test_delete_completed_task(client, completed_task):
+    response = client.post(reverse('core:delete', kwargs={'task_id': completed_task.id}))
+    assert not Task.objects.exists()
+
+def test_delete_completed_task_status_code(client, completed_task):
+    response = client.post(reverse('core:delete', kwargs={'task_id': completed_task.id}))
+    assert response.status_code == 302

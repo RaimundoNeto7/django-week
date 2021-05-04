@@ -48,14 +48,26 @@
             <div class="col-md-8 offset-md-2">
                 <h2 class="mt-5">Tarefas concluídas</h2>
                 {% for task in completed_tasks %}
-                    <form action="{% url 'core:detail' task_id=task.id %}" method="POST">
-                        {% csrf_token %}
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Descreva sua tarefa" required="required"
-                                aria-label="Descreva sua tarefa" aria-describedby="btn-add" name="title" value="{{ task.title }}">
-                            <button type="submit" class="btn btn-warning" id="btn-add">Marcar como pendente</button>
+                    <div class="row">
+                        <div class="col-2">
+                        <form action="{% url 'core:delete' task_id=task.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <button type="submit" class="btn btn-danger" id="btn-add">Deletar</button>
+                            </div>
+                        </form>
                         </div>
-                    </form>
+                        <div class="col-10">
+                        <form action="{% url 'core:detail' task_id=task.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Descreva sua tarefa" required="required"
+                                    aria-label="Descreva sua tarefa" aria-describedby="btn-add" name="title" value="{{ task.title }}">
+                                <button type="submit" class="btn btn-warning" id="btn-add">Marcar como pendente</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
         </div>
